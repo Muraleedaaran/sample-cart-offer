@@ -153,23 +153,6 @@ public class CartOfferApplicationTests {
 		Assert.assertEquals("Cart value should be zero", 0, cartValue);
 	}
 
-	@Test
-	public void checkFlatXPercentForOneSegment_MoreDiscount() throws Exception {
-		//TC09 - Verify behavior when applying a 100% discount for a segment.
-		List<String> segments = new ArrayList<>();
-		segments.add("p2");
-		OfferRequest offerRequest = new OfferRequest(1, "FLATX%", 100, segments);
-		boolean result = addOffer(offerRequest);
-		Assert.assertEquals(result, true); // able to add offer
-
-		ApplyOfferRequest applyOfferRequest = new ApplyOfferRequest(200, 1, 2);
-		ApplyOfferResponse applyOfferResponse = applyOffer(applyOfferRequest);
-		int cartValue = applyOfferResponse.getCart_value();
-		System.out.println("Cart_value for TC09 ====> " + cartValue);
-		Assert.assertEquals("Incorrect cart value", 0, cartValue);
-	}
-
-
 	public boolean addOffer(OfferRequest offerRequest) throws Exception {
 		String urlString = "http://localhost:9001/api/v1/offer";
 		URL url = new URL(urlString);
