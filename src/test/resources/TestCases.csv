@@ -1,0 +1,17 @@
+﻿Test Case ID,Description,Expected Result,is_Automated,Not_Automated_Reason
+TC01,Verify that a user in segment p1 with an offer of FLAT ₹10 off on a ₹200 order sees ₹190 to pay.,The final payable amount should be ₹190.,yes,NA
+TC02,Verify that a user in segment p2 with an offer of FLAT 10% off on a ₹200 order sees ₹180 to pay.,The final payable amount should be ₹180.,yes,NA
+TC03,Verify that a user in segment p3 with no offer applied sees the original amount of ₹200.,The final payable amount should be ₹200.,yes,NA
+TC04,Verify FLAT ₹10 off when total order amount is exactly ₹10.,The final payable amount should be ₹0.,yes,NA
+TC05,Verify FLAT 1% off when total order amount is ₹100 (smallest meaningful percentage).,The final payable amount should be ₹99.,yes,Failing due to implementation not supported
+TC06,"Verify FLAT ₹10 off on a large order amount (e.g., ₹10,000).","The final payable amount should be ₹9,990.",yes,NA
+TC07,"Verify FLAT 10% off on a large order amount (e.g., ₹10,000).","The final payable amount should be ₹9,000.",yes,NA
+TC08,Verify behavior when order amount is ₹0 (no offers applicable).,The final payable amount should be ₹0.,yes,NA
+TC09,Verify behavior when applying a 100% discount for a segment.,The final payable amount should be ₹0.,yes,NA
+TC10,"Verify behavior when total order amount after offer application becomes negative (e.g., FLAT ₹500 on ₹400).",The final payable amount should be ₹0 (not negative).,yes,NA
+TC11,Verify behavior when applying a 200% discount for a segment.,The final payable amount should be ₹0 (not negative).,yes,NA
+TC12,"Verify behavior for fractional discounts (e.g., 7.5% off).",The final payable amount should handle decimals correctly (rounding rules apply).,no,code implementation not supported
+TC13,"Verify offers applied with different payment methods (e.g., Credit Card, Wallet).
+",The final payable amount should not be negative if the payment methods offers combined goes above the cart value,no,code implementation not supported
+TC14,"Verify multiple offers for the same segment (Eg., FLATX off for p1 and p2 customers and FLATX% off for p1 customers, wherein p1 customers has multiple offers)",The final payable amount should not be negative if total offers combined goes above the cart value,no,code implementation not supported
+TC15,Verify if other international currency is supported and offers applied accordingly,The final payable amount should not be negative,no,code implementation not supported
