@@ -23,9 +23,24 @@ public class AutowiredController {
 
 	@PostMapping(path = "/api/v1/offer")
 	public ApiResponse postOperation(@RequestBody OfferRequest offerRequest) {
-		System.out.println("List ====> "+allOffers);
 		System.out.println(offerRequest);
-		allOffers.add(offerRequest);
+		// Check if an offer with the same details exists
+		boolean updated = false;
+		for (OfferRequest existingOffer : allOffers) {
+			if (existingOffer.getOffer_type().equals(offerRequest.getOffer_type()) &&
+					existingOffer.getCustomer_segment().equals(offerRequest.getCustomer_segment())) {
+
+				// Update the offer_value if a match is found
+				existingOffer.setOffer_value(offerRequest.getOffer_value());
+				updated = true;
+				break;
+			}
+		}
+
+		// If no matching offer was found, add the new offer
+		if (!updated) {
+			allOffers.add(offerRequest);
+		}
 		return new ApiResponse("success");
 	}
 
