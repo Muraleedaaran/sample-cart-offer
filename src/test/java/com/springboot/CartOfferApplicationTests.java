@@ -156,6 +156,60 @@ public class CartOfferApplicationTests {
 		Assert.assertEquals("Cart value should be zero", 0, cartValue);
 	}
 
+	@Test
+	public void edgeCaseForFlatXOffer() throws Exception {
+		//TC12 - Verify FLAT ₹0 off on a ₹5000 order
+		List<String> segments = new ArrayList<>();
+		segments.add("p1");
+		OfferRequest offerRequest = new OfferRequest(1,"FLATX",0,segments);
+		boolean result = addOffer(offerRequest);
+		Assert.assertEquals(result,true); // able to add offer
+
+		ApplyOfferRequest applyOfferRequest = new ApplyOfferRequest(5000, 1, 1);
+		ApplyOfferResponse applyOfferResponse = applyOffer(applyOfferRequest);
+		int cartValue = applyOfferResponse.getCart_value();
+		System.out.println("Cart_value for TC12 ====> "+cartValue);
+		Assert.assertEquals("Incorrect cart value", 5000, cartValue);
+
+		//TC14 - Verify FLAT ₹-100 off on a ₹5000 order
+		offerRequest = new OfferRequest(1,"FLATX",-100,segments);
+		result = addOffer(offerRequest);
+		Assert.assertEquals(result,true); // able to add offer
+
+		applyOfferRequest = new ApplyOfferRequest(5000, 1, 1);
+		applyOfferResponse = applyOffer(applyOfferRequest);
+		cartValue = applyOfferResponse.getCart_value();
+		System.out.println("Cart_value for TC14 ====> "+cartValue);
+		Assert.assertEquals("Payable amount should not be more than the cart amount", 5000, cartValue);
+	}
+
+	@Test
+	public void edgeCaseForFlatXPercentOffer() throws Exception {
+		//TC13 - Verify FLAT 0% off on ₹10,000 order
+		List<String> segments = new ArrayList<>();
+		segments.add("p2");
+		OfferRequest offerRequest = new OfferRequest(1,"FLATX%",0,segments);
+		boolean result = addOffer(offerRequest);
+		Assert.assertEquals(result,true); // able to add offer
+
+		ApplyOfferRequest applyOfferRequest = new ApplyOfferRequest(10000, 1, 2);
+		ApplyOfferResponse applyOfferResponse = applyOffer(applyOfferRequest);
+		int cartValue = applyOfferResponse.getCart_value();
+		System.out.println("Cart_value for TC13 ====> "+cartValue);
+		Assert.assertEquals("Incorrect cart value", 10000, cartValue);
+
+		//TC15 - Verify FLAT -10% off on ₹10,000 order
+		offerRequest = new OfferRequest(1,"FLATX%",-10,segments);
+		result = addOffer(offerRequest);
+		Assert.assertEquals(result,true); // able to add offer
+
+		applyOfferRequest = new ApplyOfferRequest(10000, 1, 2);
+		applyOfferResponse = applyOffer(applyOfferRequest);
+		cartValue = applyOfferResponse.getCart_value();
+		System.out.println("Cart_value for TC15 ====> "+cartValue);
+		Assert.assertEquals("Incorrect cart value", 10000, cartValue);
+	}
+
 	public boolean addOffer(OfferRequest offerRequest) throws Exception {
 		String urlString = "http://localhost:9001/api/v1/offer";
 		URL url = new URL(urlString);
