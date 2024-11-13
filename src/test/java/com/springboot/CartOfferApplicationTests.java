@@ -24,6 +24,10 @@ import java.util.List;
 @SpringBootTest
 public class CartOfferApplicationTests {
 
+	/*
+	Please refer "src/test/resources/TestCases.csv" for all the test scenarios
+	 */
+
 
 	@Test
 	public void checkFlatXForOneSegment() throws Exception {
